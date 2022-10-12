@@ -1,0 +1,11 @@
+{
+  "name": "typescript-5i4anz",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@rxfx/after": "^1.0.0",
+    "@rxfx/bus": "^1.0.0",
+    "@rxfx/service": "^1.0.1",
+    "rxjs": "7.3.*"
+  }
+}
