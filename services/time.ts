@@ -14,3 +14,9 @@ bus.listen(
 );
 
 bus.trigger(TIME_REQUEST);
+bus.trigger(TIME_REQUEST);
+// TODO dont call the endpoint again if we are "fetch"ing already
+// time/request
+// time/request
+// Time listener is live! TODO put in DOM
+// Time listener is live! TODO put in DOM
