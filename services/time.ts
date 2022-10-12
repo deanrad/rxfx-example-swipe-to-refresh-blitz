@@ -4,19 +4,19 @@ import { bus } from './bus';
 export const TIME_REQUEST = 'time/request';
 
 const fakeTimeResponse = after(2500, () => {
-  console.log('Time listener is live! TODO put in DOM');
+  console.log('Time listener is live, and singleton! TODO put in DOM');
   return new Date().toUTCString();
 });
 
-bus.listen(
+bus.listenBlocking(
   (e) => e === TIME_REQUEST,
   () => fakeTimeResponse
 );
 
 bus.trigger(TIME_REQUEST);
 bus.trigger(TIME_REQUEST);
-// TODO dont call the endpoint again if we are "fetch"ing already
+// Now we see that the effect *will not* execute if already executing!
+// No tracking variables required!
 // time/request
 // time/request
-// Time listener is live! TODO put in DOM
 // Time listener is live! TODO put in DOM
