@@ -1,16 +1,31 @@
 import { after } from '@rxfx/after';
 import { bus } from './bus';
+import { setData } from './DOM';
 
 export const TIME_REQUEST = 'time/request';
 
 const fakeTimeResponse = after(2500, () => {
-  console.log('Time listener is live, and singleton! TODO put in DOM');
+  console.log('Time listener is live, and singleton!');
   return new Date().toUTCString();
 });
 
+const handleRequestBegin = () => {
+  console.log('loading...');
+  setData('loading...');
+};
+
+const handleRequestDone = (newDate) => {
+  console.log(newDate);
+  setData('Refreshed at: ' + newDate);
+};
+
 bus.listenBlocking(
   (e) => e === TIME_REQUEST,
-  () => fakeTimeResponse
+  () => fakeTimeResponse,
+  {
+    subscribe: handleRequestBegin,
+    next: handleRequestDone,
+  }
 );
 
 bus.trigger(TIME_REQUEST);
