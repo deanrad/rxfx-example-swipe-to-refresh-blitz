@@ -1,6 +1,10 @@
 import { after } from '@rxfx/after';
 import { bus } from './bus';
 import { setData } from './DOM';
+import {
+  connectDOMEventsToPointerService,
+  disconnectDOMEventsFromPointerService,
+} from './pointer';
 
 export const TIME_REQUEST = 'time/request';
 
@@ -11,11 +15,13 @@ const fakeTimeResponse = after(2500, () => {
 
 const handleRequestBegin = () => {
   console.log('loading...');
+  disconnectDOMEventsFromPointerService();
   setData('loading...');
 };
 
 const handleRequestDone = (newDate) => {
   console.log(newDate);
+  connectDOMEventsToPointerService();
   setData('Refreshed at: ' + newDate);
 };
 
