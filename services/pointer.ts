@@ -2,6 +2,7 @@ import { createService } from '@rxfx/service';
 import { fromEvent } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { bus } from './bus';
+import { setRefreshPos } from './DOM';
 
 const MOBILE = { DOWN: 'touchstart', UP: 'touchend', MOVE: 'touchmove' };
 const DESKTOP = { DOWN: 'mousedown', UP: 'mouseup', MOVE: 'mousemove' };
@@ -23,6 +24,9 @@ export const pointerService = createService<'up' | 'down', number, Error>(
     }
   }
 );
+
+/////////////////// UI updates /////////////////
+pointerService.responses.subscribe((r) => setRefreshPos(r.payload));
 
 /////////////////// DOM Event Harvesting /////////////////
 
