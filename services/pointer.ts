@@ -1,6 +1,6 @@
 import { createService } from '@rxfx/service';
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { bus } from './bus';
 
 const MOBILE = { DOWN: 'touchstart', UP: 'touchend', MOVE: 'touchmove' };
@@ -9,15 +9,17 @@ const DESKTOP = { DOWN: 'mousedown', UP: 'mouseup', MOVE: 'mousemove' };
 export const POINTER_EVENTS =
   'ontouchstart' in document.documentElement ? MOBILE : DESKTOP;
 
-const mouseYs = fromEvent(document, POINTER_EVENTS.MOVE).pipe(
-  map((ev: MouseEvent) => ev.clientY)
+const mouseYsUntilUp = fromEvent(document, POINTER_EVENTS.MOVE).pipe(
+  map((ev: MouseEvent) => ev.clientY),
+  takeUntil(fromEvent(document, POINTER_EVENTS.UP))
 );
+
 export const pointerService = createService<'up' | 'down', number, Error>(
   'pointer',
   bus,
   (event) => {
     if (event === 'down') {
-      return mouseYs;
+      return mouseYsUntilUp;
     }
   }
 );
